@@ -1,7 +1,9 @@
 package Multiple.Choice.multiplechoice.controllers;
 
 import Multiple.Choice.multiplechoice.models.Choice;
+import Multiple.Choice.multiplechoice.models.Deck;
 import Multiple.Choice.multiplechoice.models.Question;
+import Multiple.Choice.multiplechoice.service.DeckService;
 import Multiple.Choice.multiplechoice.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +14,27 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("{deckId}/questions")
+@RequestMapping("/decks/{deckId}/questions")
 public class QuestionController {
     private final QuestionService questionService;
+    private final DeckService deckService;
     private int deckId;
 
     // CONSTRUCTOR
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, DeckService deckService) {
         this.questionService = questionService;
+        this.deckService = deckService;
     }
 
     @PostMapping("")
-    public ResponseEntity<Question> createQuestion(@RequestBody Question newQuestion) {
-        return ResponseEntity.ok(questionService.createQuestion(newQuestion));
+    public ResponseEntity<Question> createQuestion(@RequestBody Question newQuestion, @PathVariable("deckId") String deckId) throws Exception {
+        int intDeckId = Integer.parseInt(deckId);
+        Deck deck = deckService.fetchDeckById(intDeckId);
+        Question question = questionService.createQuestion(newQuestion);
+        List<Question> deckQuestions = deck.getQuestions();
+        deckQuestions.add(newQuestion);
+        deckService.updateDeckById(deck, intDeckId);
+        return ResponseEntity.ok(question);
     }
 
     @GetMapping("")

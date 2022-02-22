@@ -25,4 +25,7 @@ public class Question {
     @Getter @Setter
     private List<Choice> choices;
 
+    @ManyToOne
+    @Getter @Setter
+    private Deck deck;
 }
