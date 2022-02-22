@@ -1,10 +1,13 @@
 package Multiple.Choice.multiplechoice.service;
 
+import Multiple.Choice.multiplechoice.models.Choice;
 import Multiple.Choice.multiplechoice.models.Deck;
 import Multiple.Choice.multiplechoice.models.Question;
 import Multiple.Choice.multiplechoice.repositories.DeckRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,12 +66,27 @@ public class DeckService {
         return deckRepo.save(deck);
     }
 
-    public List<Question> fetchAllQuestion(int id) throws Exception {
+    public List<Question> fetchAllQuestion(int id, String shuffleQuestion, String shuffleChoice) throws Exception {
         Optional<Deck> optionalDeck = deckRepo.findById(id);
         if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
         Deck deck = optionalDeck.get();
-        return deck.getQuestions();
+        List<Question> questions = deck.getQuestions();
+
+        if (!(shuffleQuestion==null || shuffleQuestion.equals(""))) Collections.shuffle(questions);
+
+        if (!(shuffleChoice==null || shuffleChoice.equals(""))) {
+            for (Question question: deck.getQuestions()) {
+                shuffleChoices(question);
+            }
+        }
+
+        return questions;
     }
 
-    // TEST METHODS
+    // HELPER METHODS
+    public void shuffleChoices(Question question) {
+        List<Choice> choices = question.getChoices();
+        Collections.shuffle(choices);
+        question.setChoices(choices);
+    }
 }

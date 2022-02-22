@@ -4,6 +4,7 @@ import Multiple.Choice.multiplechoice.models.Deck;
 import Multiple.Choice.multiplechoice.models.Question;
 import Multiple.Choice.multiplechoice.service.DeckService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.rmi.server.ExportException;
@@ -21,6 +22,8 @@ public class DeckController {
     }
 
     // MAIN METHODS
+
+    // Handle a whole deck
     @PostMapping("")
     public ResponseEntity<Deck> createDeck(@RequestBody Deck newDeck) {
         return ResponseEntity.ok(deckService.createDeck(newDeck));
@@ -33,12 +36,14 @@ public class DeckController {
     }
 
     @GetMapping("/{deckId}/questions")
-    public ResponseEntity<List<Question>> fetchAllQuestionByDeck(@PathVariable("deckId") String deckId) throws Exception {
+    public ResponseEntity<List<Question>> fetchAllQuestionByDeck(@PathVariable("deckId") String deckId,
+                                                                 @Nullable @RequestParam("shuffleQuestion") String shuffleQuestion,
+                                                                 @Nullable @RequestParam("shuffleChoice") String shuffleChoice) throws Exception {
         int intDeckId = Integer.parseInt(deckId);
-        return ResponseEntity.ok(deckService.fetchAllQuestion(intDeckId));
+        return ResponseEntity.ok(deckService.fetchAllQuestion(intDeckId, shuffleQuestion, shuffleChoice));
     }
 
-
+    // Modify each deck
     @PostMapping("/{deckId}/questions")
     public ResponseEntity<Deck> addQuestion(@PathVariable("deckId") String deckId, @RequestBody Question newQuestion) throws Exception{
         int intDeckId = Integer.parseInt(deckId);

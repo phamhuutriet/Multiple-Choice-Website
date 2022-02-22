@@ -14,13 +14,11 @@ import java.util.Optional;
 @Service
 public class QuestionService {
     private final QuestionRepo questionRepo;
-    private final ChoiceRepo choiceRepo;
 
     // CONSTRUCTOR
     @Autowired
-    public QuestionService(QuestionRepo questionRepo, ChoiceRepo choiceRepo) {
+    public QuestionService(QuestionRepo questionRepo) {
         this.questionRepo = questionRepo;
-        this.choiceRepo = choiceRepo;
     }
 
     // MAIN METHODS
