@@ -5,6 +5,7 @@ import Multiple.Choice.multiplechoice.models.Question;
 import Multiple.Choice.multiplechoice.repositories.ChoiceRepo;
 import Multiple.Choice.multiplechoice.repositories.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -45,6 +46,7 @@ public class QuestionService {
 
         question.setDescription(updatedQuestion.getDescription());
         question.setChoices(updatedQuestion.getChoices());
+        question.setPriorityScore(updatedQuestion.getPriorityScore());
 
         return questionRepo.save(question);
     }

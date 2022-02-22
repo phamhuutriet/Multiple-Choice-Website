@@ -38,9 +38,10 @@ public class DeckController {
     @GetMapping("/{deckId}/questions")
     public ResponseEntity<List<Question>> fetchAllQuestionByDeck(@PathVariable("deckId") String deckId,
                                                                  @Nullable @RequestParam("shuffleQuestion") String shuffleQuestion,
-                                                                 @Nullable @RequestParam("shuffleChoice") String shuffleChoice) throws Exception {
+                                                                 @Nullable @RequestParam("shuffleChoice") String shuffleChoice,
+                                                                 @Nullable @RequestParam("sortByPriority") String sortByPriority) throws Exception {
         int intDeckId = Integer.parseInt(deckId);
-        return ResponseEntity.ok(deckService.fetchAllQuestion(intDeckId, shuffleQuestion, shuffleChoice));
+        return ResponseEntity.ok(deckService.fetchAllQuestion(intDeckId, shuffleQuestion, shuffleChoice, sortByPriority));
     }
 
     // Modify each deck

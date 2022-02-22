@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @Entity
 public class Question {
@@ -28,4 +29,7 @@ public class Question {
     @ManyToOne
     @Getter @Setter
     private Deck deck;
+
+    @Getter @Setter
+    private int priorityScore = 1;
 }
