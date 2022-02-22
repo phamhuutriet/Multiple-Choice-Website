@@ -23,7 +23,7 @@ public class QuestionService {
         this.choiceRepo = choiceRepo;
     }
 
-    // METHOD
+    // MAIN METHODS
     public Question createQuestion(Question newQuestion) {
         List<Choice> choices = newQuestion.getChoices();
 
@@ -34,13 +34,34 @@ public class QuestionService {
         return questionRepo.findAll();
     }
 
-    public Optional<Question> testFetchById(int id) {
-        return questionRepo.findById(id);
+    public Question fetchQuestionById(int id) throws Exception {
+        Optional<Question> optionalQuestion = questionRepo.findById(id);
+        if (optionalQuestion.isEmpty()) throw new Exception("Id not found");
+        return optionalQuestion.get();
     }
 
+    public Question updateQuestionById(int id, Question updatedQuestion) throws Exception {
+        Optional<Question> optionalQuestion = questionRepo.findById(id);
+        if (optionalQuestion.isEmpty()) throw new Exception("Id not found");
+        Question question = optionalQuestion.get();
+
+        question.setDescription(updatedQuestion.getDescription());
+        question.setChoices(updatedQuestion.getChoices());
+
+        return questionRepo.save(question);
+    }
+
+    public void deleteQuestionById(int id) {
+        questionRepo.deleteById(id);
+    }
+
+
+    // TEST METHODS
     public List<Question> populateData(List<Question> data) {
         return questionRepo.saveAll(data);
     }
 
-
+    public Optional<Question> testFetchById(int id) {
+        return questionRepo.findById(id);
+    }
 }
