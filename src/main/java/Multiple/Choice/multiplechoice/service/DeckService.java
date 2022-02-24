@@ -43,11 +43,9 @@ public class DeckService {
         if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
         Deck deck = optionalDeck.get();
 
-        for (Choice choice: newQuestion.getChoices()) {
-            choice.setQuestion(newQuestion);
-        }
-        newQuestion.setDeck(deck);
-        deck.getQuestions().add(newQuestion);
+        Question question = questionService.createQuestion(newQuestion);
+        question.setDeck(deck);
+        deck.getQuestions().add(question);
 
         return deckRepo.save(deck);
     }
