@@ -5,6 +5,7 @@ import Multiple.Choice.multiplechoice.models.Deck;
 import Multiple.Choice.multiplechoice.models.PriorityComparator;
 import Multiple.Choice.multiplechoice.models.Question;
 import Multiple.Choice.multiplechoice.repositories.DeckRepo;
+import Multiple.Choice.multiplechoice.repositories.QuestionRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,15 +14,21 @@ import java.util.*;
 public class DeckService {
 
     private final DeckRepo deckRepo;
+    private final QuestionService questionService;
 
     // CONSTRUCTOR
-    public DeckService(DeckRepo deckRepo) {
+    public DeckService(DeckRepo deckRepo, QuestionService questionService) {
+        this.questionService = questionService;
         this.deckRepo = deckRepo;
     }
 
     // MAIN METHODS
     public Deck createDeck(Deck newDeck) {
         return deckRepo.save(newDeck);
+    }
+
+    public List<Deck> fetchAllDeck() {
+        return deckRepo.findAll();
     }
 
     public Deck fetchDeckById(int id) throws Exception {
@@ -35,6 +42,11 @@ public class DeckService {
         Optional<Deck> optionalDeck = deckRepo.findById(id);
         if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
         Deck deck = optionalDeck.get();
+
+        for (Choice choice: newQuestion.getChoices()) {
+            choice.setQuestion(newQuestion);
+        }
+        newQuestion.setDeck(deck);
         deck.getQuestions().add(newQuestion);
 
         return deckRepo.save(deck);

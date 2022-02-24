@@ -9,22 +9,27 @@ import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class QuestionService {
     private final QuestionRepo questionRepo;
+    private final ChoiceRepo choiceRepo;
 
     // CONSTRUCTOR
     @Autowired
-    public QuestionService(QuestionRepo questionRepo) {
+    public QuestionService(QuestionRepo questionRepo, ChoiceRepo choiceRepo) {
+        this.choiceRepo = choiceRepo;
         this.questionRepo = questionRepo;
     }
 
     // MAIN METHODS
     public Question createQuestion(Question newQuestion) {
-        List<Choice> choices = newQuestion.getChoices();
+        for (Choice choice: newQuestion.getChoices()) {
+            choice.setQuestion(newQuestion);
+        }
 
         return questionRepo.save(newQuestion);
     }

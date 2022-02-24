@@ -1,5 +1,6 @@
 package Multiple.Choice.multiplechoice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -20,6 +21,9 @@ public class Choice {
     private String body;
 
     @ManyToOne
+    @JoinColumn(name = "Q_ID")
+    @JsonIgnoreProperties("choices")
+    @Getter @Setter
     private Question question;
 
     @JsonProperty("isAnswer")

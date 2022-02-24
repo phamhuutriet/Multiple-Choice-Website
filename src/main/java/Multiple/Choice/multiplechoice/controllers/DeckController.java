@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.rmi.server.ExportException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/decks")
 public class DeckController {
@@ -27,6 +28,12 @@ public class DeckController {
     @PostMapping("")
     public ResponseEntity<Deck> createDeck(@RequestBody Deck newDeck) {
         return ResponseEntity.ok(deckService.createDeck(newDeck));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<Deck>> fetchAllDeck() {
+        System.out.println("FETCH ALL DECK");
+        return ResponseEntity.ok(deckService.fetchAllDeck());
     }
 
     @GetMapping("/{id}")
