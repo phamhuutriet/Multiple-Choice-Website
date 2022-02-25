@@ -21,7 +21,7 @@ public class Deck {
     @Getter @Setter
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deck")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "deck")
     @JsonIgnoreProperties("deck")
     @Getter @Setter
     private List<Question> questions;

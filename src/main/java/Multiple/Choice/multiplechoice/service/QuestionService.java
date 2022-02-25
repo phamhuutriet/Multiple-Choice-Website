@@ -49,8 +49,8 @@ public class QuestionService {
         if (optionalQuestion.isEmpty()) throw new Exception("Id not found");
         Question question = optionalQuestion.get();
 
-        question.setDescription(updatedQuestion.getDescription());
-        question.setChoices(updatedQuestion.getChoices());
+        question.setDescription(updatedQuestion.getDescription() != null ? updatedQuestion.getDescription() : question.getDescription());
+        question.setChoices(updatedQuestion.getChoices().isEmpty() ? updatedQuestion.getChoices() : question.getChoices());
         question.setPriorityScore(updatedQuestion.getPriorityScore());
 
         return questionRepo.save(question);
