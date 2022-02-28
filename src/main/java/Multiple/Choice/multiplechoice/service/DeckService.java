@@ -81,15 +81,17 @@ public class DeckService {
         Deck deck = optionalDeck.get();
         List<Question> questions = deck.getQuestions();
 
-        if (!(shuffleQuestion==null || shuffleQuestion.equals(""))) Collections.shuffle(questions);
+        if (shuffleQuestion != null && shuffleQuestion.equals("true")) {
+            Collections.shuffle(questions);
+        }
 
-        if (!(shuffleChoice==null || shuffleChoice.equals(""))) {
+        if (shuffleChoice != null && shuffleChoice.equals("true")) {
             for (Question question: deck.getQuestions()) {
                 shuffleChoices(question);
             }
         }
 
-        if (!(sortByPriority != null && sortByPriority.equals("false"))) {
+        if (sortByPriority != null && sortByPriority.equals("true")) {
             questions.sort(new PriorityComparator());
         }
 

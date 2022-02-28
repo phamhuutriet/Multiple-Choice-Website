@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -35,4 +36,11 @@ public class Question {
 
     @Getter @Setter
     private int priorityScore = 1;
+
+    @Getter @Setter
+    private Date createdAt;
+
+    public Question() {
+        this.createdAt = new Date();
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,25 @@ public class QuestionService {
         Question question = optionalQuestion.get();
 
         question.setDescription(updatedQuestion.getDescription() != null ? updatedQuestion.getDescription() : question.getDescription());
-        question.setChoices(updatedQuestion.getChoices().isEmpty() ? updatedQuestion.getChoices() : question.getChoices());
         question.setPriorityScore(updatedQuestion.getPriorityScore());
+
+        HashSet<Integer> newIdSet = new HashSet<>();
+
+        List<Choice> updatedChoices = new ArrayList<>();
+        for (Choice choice: updatedQuestion.getChoices()) {
+            Choice updatedChoice = choiceRepo.save(choice);
+            newIdSet.add(updatedChoice.getId());
+            updatedChoice.setQuestion(question);
+            updatedChoices.add(updatedChoice);
+        }
+
+        question.getChoices().forEach(choice -> {
+            if (!newIdSet.contains(choice.getId())) {
+                choiceRepo.deleteById(choice.getId());
+            }
+        });
+
+        question.setChoices(updatedChoices);
 
         return questionRepo.save(question);
     }

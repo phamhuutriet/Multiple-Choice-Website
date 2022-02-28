@@ -38,6 +38,7 @@ public class QuestionController {
     @PatchMapping("/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable("id") String id, @RequestBody Question updatedQuestion) throws Exception {
         int intId = Integer.parseInt(id);
+        System.out.println("updated");
         return ResponseEntity.ok(questionService.updateQuestionById(intId, updatedQuestion));
     }
 
