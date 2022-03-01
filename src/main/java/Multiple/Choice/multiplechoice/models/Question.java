@@ -23,7 +23,7 @@ public class Question {
     @Getter @Setter
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "question")
     @JsonIgnoreProperties("question")
     @Getter @Setter
     private List<Choice> choices;
@@ -35,12 +35,16 @@ public class Question {
     private Deck deck;
 
     @Getter @Setter
-    private int priorityScore = 1;
+    private int priorityScore = 0;
 
     @Getter @Setter
     private Date createdAt;
 
+    @Getter @Setter
+    private Date spacedRepetition;
+
     public Question() {
         this.createdAt = new Date();
+        this.spacedRepetition = new Date();
     }
 }

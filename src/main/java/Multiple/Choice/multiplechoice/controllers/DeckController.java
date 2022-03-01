@@ -51,6 +51,13 @@ public class DeckController {
         return ResponseEntity.ok(deckService.fetchAllQuestion(intDeckId, shuffleQuestion, shuffleChoice, sortByPriority));
     }
 
+    @DeleteMapping("/{deckId}")
+    public ResponseEntity<Void> deleteDeckById(@PathVariable("deckId") String deckId) {
+        int intDeckId = Integer.parseInt(deckId);
+        deckService.deleteDeckById(intDeckId);
+        return ResponseEntity.ok().build();
+    }
+
     // Modify each deck
     @PostMapping("/{deckId}/questions")
     public ResponseEntity<Deck> addQuestion(@PathVariable("deckId") String deckId, @RequestBody Question newQuestion) throws Exception{
@@ -63,13 +70,6 @@ public class DeckController {
         int intDeckId = Integer.parseInt(deckId);
         int intQuestionId = Integer.parseInt(questionId);
         return ResponseEntity.ok(deckService.removeQuestion(intDeckId, intQuestionId));
-    }
-
-    @PatchMapping("/{deckId}/questions/{questionId}")
-    public ResponseEntity<Deck> updateQuestion(@PathVariable("deckId") String deckId, @PathVariable("questionId") String questionId, @RequestBody Question updateQuestion) throws Exception {
-        int intDeckId = Integer.parseInt(deckId);
-        int intQuestionId = Integer.parseInt(questionId);
-        return ResponseEntity.ok(deckService.updateQuestion(updateQuestion, intDeckId, intQuestionId));
     }
 
     // TEST METHODS

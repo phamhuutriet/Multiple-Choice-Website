@@ -3,6 +3,7 @@ package Multiple.Choice.multiplechoice.controllers;
 import Multiple.Choice.multiplechoice.models.Question;
 import Multiple.Choice.multiplechoice.service.QuestionService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,10 +37,11 @@ public class QuestionController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Question> updateQuestion(@PathVariable("id") String id, @RequestBody Question updatedQuestion) throws Exception {
+    public ResponseEntity<Question> updateQuestion(@PathVariable("id") String id,
+                                                   @Nullable @RequestParam("setPriority") String setPriority,
+                                                   @RequestBody Question updatedQuestion) throws Exception {
         int intId = Integer.parseInt(id);
-        System.out.println("updated");
-        return ResponseEntity.ok(questionService.updateQuestionById(intId, updatedQuestion));
+        return ResponseEntity.ok(questionService.updateQuestionById(intId, updatedQuestion, setPriority));
     }
 
     @DeleteMapping("/{id}")

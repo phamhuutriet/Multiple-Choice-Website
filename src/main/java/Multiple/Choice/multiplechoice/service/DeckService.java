@@ -38,6 +38,10 @@ public class DeckService {
         return optionalDeck.get();
     }
 
+    public void deleteDeckById(int id) {
+        deckRepo.deleteById(id);
+    }
+
     public Deck addQuestion(Question newQuestion, int id) throws Exception {
         Optional<Deck> optionalDeck = deckRepo.findById(id);
         if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
@@ -55,22 +59,6 @@ public class DeckService {
         if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
         Deck deck = optionalDeck.get();
         deck.getQuestions().removeIf(question -> question.getId() == questionId);
-
-        return deckRepo.save(deck);
-    }
-
-    public Deck updateQuestion(Question updatedQuestion, int deckId, int questionId) throws Exception {
-        Optional<Deck> optionalDeck = deckRepo.findById(deckId);
-        if (optionalDeck.isEmpty()) throw new Exception("Deck's id not found");
-        Deck deck = optionalDeck.get();
-
-        for (Question question: deck.getQuestions()) {
-            if (question.getId() == questionId) {
-                question.setDescription(updatedQuestion.getDescription());
-                question.setChoices(updatedQuestion.getChoices());
-                question.setPriorityScore(updatedQuestion.getPriorityScore());
-            }
-        }
 
         return deckRepo.save(deck);
     }
