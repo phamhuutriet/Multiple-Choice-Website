@@ -1,5 +1,6 @@
 package Multiple.Choice.multiplechoice.models;
 
+import Multiple.Choice.multiplechoice.models.security.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,10 @@ public class Deck {
     @JsonIgnoreProperties("deck")
     @Getter @Setter
     private List<Question> questions;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @JsonIgnoreProperties("decks")
+    @Getter @Setter
+    private User user;
 }
