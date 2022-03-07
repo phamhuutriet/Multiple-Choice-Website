@@ -8,7 +8,11 @@ public class AuthenticateResponse {
     @Getter @Setter
     private final String jwt;
 
-    public AuthenticateResponse(String jwt) {
+    @Getter @Setter
+    private final int userId;
+
+    public AuthenticateResponse(String jwt, int userId) {
         this.jwt = jwt;
+        this.userId = userId;
     }
 }

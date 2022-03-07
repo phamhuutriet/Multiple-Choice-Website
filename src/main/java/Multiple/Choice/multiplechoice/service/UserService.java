@@ -20,7 +20,6 @@ public class UserService {
     }
 
     public User createNewUser(User newUser) {
-        System.out.println(newUser.isActive());
         return userRepo.save(newUser);
     }
 
@@ -36,7 +35,7 @@ public class UserService {
         return user.getDecks();
     }
 
-    public User addNewDeck(int userId, Deck newDeck) throws  Exception{
+    public Deck addNewDeck(int userId, Deck newDeck) throws  Exception{
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isEmpty()) throw new Exception("Id not found");
         User user = optionalUser.get();
@@ -44,8 +43,9 @@ public class UserService {
         Deck savedDeck = deckService.createDeck(newDeck);
         savedDeck.setUser(user);
         user.getDecks().add(savedDeck);
+        userRepo.save(user);
 
-        return userRepo.save(user);
+        return savedDeck;
     }
 
     public User removeDeck(int userId, int deckId) throws Exception{

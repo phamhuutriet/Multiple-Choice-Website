@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("{userId}/decks")
-    public ResponseEntity<User> addNewDeck(@RequestBody Deck newDeck,
+    public ResponseEntity<Deck> addNewDeck(@RequestBody Deck newDeck,
                                            @PathVariable("userId") String userId) throws Exception {
         int intUserId = Integer.parseInt(userId);
         return ResponseEntity.ok(userService.addNewDeck(intUserId, newDeck));

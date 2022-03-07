@@ -4,6 +4,7 @@ import Multiple.Choice.multiplechoice.models.Authenticate.AuthenticateRequest;
 import Multiple.Choice.multiplechoice.models.Authenticate.AuthenticateResponse;
 import Multiple.Choice.multiplechoice.models.security.MyUserDetail;
 import Multiple.Choice.multiplechoice.models.security.User;
+import Multiple.Choice.multiplechoice.repositories.UserRepo;
 import Multiple.Choice.multiplechoice.security.filter.JwtUtil;
 import Multiple.Choice.multiplechoice.service.MyUserDetailService;
 import Multiple.Choice.multiplechoice.service.UserService;
@@ -16,11 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
+@CrossOrigin
 @RestController
 @RequestMapping("/authenticate")
 public class AuthenticateController {
@@ -36,6 +37,9 @@ public class AuthenticateController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepo userRepo;
+
     @PostMapping("")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticateRequest request) throws Exception {
         try {
@@ -47,7 +51,11 @@ public class AuthenticateController {
         MyUserDetail userDetail = (MyUserDetail) myUserDetailService.loadUserByUsername(request.getUsername());
         String jwt = jwtUtil.generateToken(userDetail);
 
-        return ResponseEntity.ok(new AuthenticateResponse(jwt));
+        Optional<User> optionalUser = userRepo.findByUsername(request.getUsername());
+        if (optionalUser.isEmpty()) throw new Exception("username not found");
+        int userId = optionalUser.get().getId();
+
+        return ResponseEntity.ok(new AuthenticateResponse(jwt, userId));
     }
 
     @PostMapping("/register")

@@ -55,7 +55,7 @@ public class QuestionService {
         question.setPriorityScore(updatedQuestion.getPriorityScore());
 
         // UPDATE SPACED REPETITION
-        if (setPriority.equals("true")) {
+        if (setPriority != null && setPriority.equals("true")) {
             Date newSpacedRepDate = getSpacedRepDate(question.getSpacedRepetition(), question.getPriorityScore());
             question.setSpacedRepetition(newSpacedRepDate);
         }
@@ -96,11 +96,8 @@ public class QuestionService {
         Calendar calendar = Calendar.getInstance();
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         calendar.setTime(date);
-        System.out.println("Before " + df.format(calendar.getTime()));
-        System.out.println("pscore: " + priorityScore);
         if (priorityScore >= 0) calendar.add(Calendar.DATE, 1);
         else calendar.add(Calendar.DATE, (int) Math.pow(2, -priorityScore));
-        System.out.println("After " + df.format(calendar.getTime()));
         return calendar.getTime();
     }
 
